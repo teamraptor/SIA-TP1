@@ -26,5 +26,74 @@ public class Board implements GPSState {
         return true;
     }
 
+    public boolean setPiece(int x, int y, CellContent piece) {
+        int n = board.length;
+        if (x >= n || x < 0 || y >= n || y < 0) {
+            return false;
+        }
+        board[x][y] = piece;
+        return true;
+    }
+    public boolean isValid() {
+        int n = board.length;
+        boolean emptyR, emptyC, eqR, eqC;
+        int countRowsR, countRowsB, countColsR, countColsB;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                emptyR = true;
+                emptyC = true;
+                eqR = true;
+                eqC = true;
+                countRowsB = 0;
+                countRowsR = 0;
+                countColsB = 0;
+                countColsR = 0;
+
+                for (int k = 0; k < n; k++) {
+                    if (board[i][k] != CellContent.EMPTY)
+                        emptyC = false;
+
+                        if (board[i][k] == CellContent.RED)
+                            countColsR ++;
+                        else
+                            countColsB ++;
+
+                        if (board[i][k] == CellContent.RED)
+                            countRowsR ++;
+                        else
+                            countRowsB ++;
+
+                        if (board[i][k] != board[j][k]) {
+                            eqC = false;
+                    }
+                    if (board[k][i] != CellContent.EMPTY)
+                        emptyR = false;
+                        if (board[k][i] != board[k][j]) {
+                            eqC = false;
+                    }
+
+                }
+                if (!(emptyC && eqC) || (!emptyR && eqR))
+                    return false;
+                if (countColsB > n/2 || countRowsB > n/2 || countColsR > n/2 || countRowsR > n/2)
+                    return false;
+            }
+        }
+
+
+        for (int i = 0; i < n - 2; i++) {
+            for (int j = 0; j < n - 2; j++) {
+                if (board[i][j] != CellContent.EMPTY)
+                    if (board[i][j] == board[i][j+1] && board[i][j] == board[i][j+2]) {
+                        return false;
+                    }
+                if (board[i][j] == board[i+1][j] && board[i][j] == board[i+2][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 }
