@@ -23,7 +23,7 @@ public class Game implements GPSProblem {
 
     public boolean isGoal(GPSState gpsState) {
         Board board = (Board) gpsState;
-        return board.isFull();
+        return board.isFull() && board.isValid();
     }
 
     public List<GPSRule> getRules() {
