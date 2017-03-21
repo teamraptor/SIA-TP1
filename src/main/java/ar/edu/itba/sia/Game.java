@@ -12,9 +12,11 @@ import java.util.List;
 public class Game implements GPSProblem {
 
     private Board initialState;
+    private List<GPSRule> rules;
 
-    public Game(Board initialState) {
+    public Game(Board initialState, List<GPSRule> rules) {
         this.initialState = initialState;
+        this.rules = rules;
     }
 
     public GPSState getInitState() {
@@ -27,10 +29,10 @@ public class Game implements GPSProblem {
     }
 
     public List<GPSRule> getRules() {
-        return null;
+        return this.rules;
     }
 
     public Integer getHValue(GPSState gpsState) {
-        return null;
+        return Integer.MAX_VALUE - Integer.MIN_VALUE;
     }
 }

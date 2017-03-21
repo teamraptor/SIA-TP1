@@ -96,5 +96,9 @@ public class Board implements GPSState {
         }
         return true;
     }
+    
+    public Integer getSize() {
+    	return board.length;
+    }
 
 }
