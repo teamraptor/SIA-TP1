@@ -1,12 +1,8 @@
 package ar.edu.itba.sia;
 
-
 import ar.edu.itba.sia.gps.api.*;
 import java.util.List;
 
-/**
- * Created by lumarzo on 14/03/17.
- */
 public class Game implements GPSProblem {
 
     private Board initialState;
@@ -30,7 +26,5 @@ public class Game implements GPSProblem {
         return this.rules;
     }
 
-    public Integer getHValue(GPSState gpsState) {
-        return Integer.MAX_VALUE - Integer.MIN_VALUE;
-    }
+    public Integer getHValue(GPSState gpsState) { return ((Board) gpsState).getFilledSize(); }
 }
