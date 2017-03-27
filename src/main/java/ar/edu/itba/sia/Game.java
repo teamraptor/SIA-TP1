@@ -1,9 +1,7 @@
 package ar.edu.itba.sia;
 
-import gps.api.GPSProblem;
-import gps.api.GPSRule;
-import gps.api.GPSState;
 
+import ar.edu.itba.sia.gps.api.*;
 import java.util.List;
 
 /**
