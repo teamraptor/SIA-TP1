@@ -2,9 +2,8 @@ package ar.edu.itba.sia;
 
 import ar.edu.itba.sia.gps.api.GPSState;
 
-/**
- * Created by lumarzo on 14/03/17.
- */
+import static ar.edu.itba.sia.Board.CellContent.*;
+
 public class Board implements GPSState {
 
     public enum CellContent {
@@ -19,7 +18,7 @@ public class Board implements GPSState {
     public boolean isFull() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
-                if(board[i][j] == CellContent.EMPTY)
+                if(board[i][j] == EMPTY)
                     return false;
             }
         }
@@ -52,13 +51,13 @@ public class Board implements GPSState {
                 eqC = true;
 
                 for (int k = 0; k < n; k++) {
-                    if (board[i][k] != CellContent.EMPTY) {
+                    if (board[i][k] != EMPTY) {
                         if (board[i][k] != board[j][k])
                             eqR = false;
                     }else {
                         fullR = false;
                     }
-                    if (board[k][i] != CellContent.EMPTY) {
+                    if (board[k][i] != EMPTY) {
                         if (board[k][i] != board[k][j])
                             eqC = false;
                     }else {
@@ -87,7 +86,7 @@ public class Board implements GPSState {
                 else if (board[j][i] == CellContent.BLUE)
                     countColsB ++;
                 
-                if ((i < n-2) && (j < n-2) && (board[i][j] != CellContent.EMPTY)) {
+                if ((i < n-2) && (j < n-2) && (board[i][j] != EMPTY)) {
                     if (board[i][j] == board[i][j+1] && board[i][j] == board[i][j+2]) {
                         return false;
                     }
@@ -111,7 +110,7 @@ public class Board implements GPSState {
         CellContent[][] board = new CellContent[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                board[i][j] = CellContent.EMPTY;
+                board[i][j] = EMPTY;
             }
         }
         return new Board(board);
@@ -139,4 +138,5 @@ public class Board implements GPSState {
         }
         return new Board(board);
     }
+
 }
