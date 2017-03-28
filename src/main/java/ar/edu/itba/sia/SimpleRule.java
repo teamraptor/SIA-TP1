@@ -20,7 +20,7 @@ public class SimpleRule implements GPSRule {
 				}
 			}
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	public Integer getCost() { return 5;}

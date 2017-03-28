@@ -36,7 +36,7 @@ public class TwoInLineRule implements GPSRule{
         return Optional.empty();
     }
 
-    public Integer getCost() { return 2; }
+    public Integer getCost() { return 0; }
 
     public String getName() {
         return "Two in line Rule";

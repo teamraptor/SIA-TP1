@@ -72,11 +72,11 @@ public class Board implements GPSState {
                     countColsR ++;
                 else if (board[j][i] == BLUE)
                     countColsB ++;
-                
-                if ((i < n-2) && (j < n-2) && (board[i][j] != EMPTY)) {
-                    if (board[i][j] == board[i][j+1] && board[i][j] == board[i][j+2])
+
+                if (board[i][j] != EMPTY) {
+                    if ((j < n-2) && board[i][j] == board[i][j+1] && board[i][j] == board[i][j+2])
                         return false;
-	                if (board[i][j] == board[i+1][j] && board[i][j] == board[i+2][j])
+                    if ((i < n-2) && board[i][j] == board[i+1][j] && board[i][j] == board[i+2][j])
                         return false;
                 }
             }

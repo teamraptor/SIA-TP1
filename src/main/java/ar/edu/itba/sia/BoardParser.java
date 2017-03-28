@@ -11,7 +11,6 @@ public class BoardParser {
     public static Board readBoard(String filePath) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         int n = Integer.parseInt(reader.readLine());
-        System.out.println(n);
         Board.CellContent[][] board = new Board.CellContent[n][n];
         String line;
         for (int i = 0; i < n; i++) {

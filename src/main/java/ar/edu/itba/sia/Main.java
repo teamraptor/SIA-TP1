@@ -7,46 +7,51 @@ import ar.edu.itba.sia.gps.api.GPSRule;
 import ar.edu.itba.sia.gps.api.GPSState;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         List<GPSRule> rulz = new ArrayList<>();
+        /*rulz.add(new TwoInLineRule());
+        rulz.add(new BetweenRule());*/
         rulz.add(new SimpleRule(Board.CellContent.BLUE));
         rulz.add(new SimpleRule(Board.CellContent.RED));
-        rulz.add(new TwoInLineRule());
-        rulz.add(new BetweenRule());
-
-        Board initialBoard = Board.emptyBoard(4);
-        initialBoard.setPiece(0,0, Board.CellContent.RED)
-                    .setPiece(2,1, Board.CellContent.BLUE)
-                    .setPiece(3,1, Board.CellContent.BLUE)
-                    .setPiece(3,2, Board.CellContent.BLUE);
 
 
-        try {
-            initialBoard = BoardParser.readBoard("/home/lumarzo/board.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        Board initialBoard = BoardParser.readBoard("./boards/board4.txt");
+
 
 
         GPSProblem problem = new Game(initialBoard, rulz);
 
-        GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
+        GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
+        long time = System.currentTimeMillis();
         List<GPSRule> solution = engine.findSolution();
+        time = System.currentTimeMillis() - time;
+        Date date = new Date(time);
+        DateFormat formatter = new SimpleDateFormat("mm:ss:SSS");
+        String dateFormatted = formatter.format(date);
+        System.out.println();
         GPSState state = initialBoard;
         System.out.println(initialBoard);
         System.out.println();
         for (GPSRule rule :solution) {
             state = rule.evalRule(state).get();
+            if (!((Board)state).isValid()) {
+                System.out.println("NO");
+                return;
+            }
             System.out.println(rule);
             System.out.println(state);
             System.out.println();
         }
-
+        System.out.println("TIME: " + dateFormatted);
     }
 }
