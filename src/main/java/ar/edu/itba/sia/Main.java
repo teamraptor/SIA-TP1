@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by lumarzo on 27/03/17.
- */
 public class Main {
 
     public static void main(String[] args) {
@@ -20,6 +17,8 @@ public class Main {
         List<GPSRule> rulz = new ArrayList<>();
         rulz.add(new SimpleRule(Board.CellContent.BLUE));
         rulz.add(new SimpleRule(Board.CellContent.RED));
+        rulz.add(new TwoInLineRule());
+        rulz.add(new BetweenRule());
 
         Board initialBoard = Board.emptyBoard(4);
         initialBoard.setPiece(0,0, Board.CellContent.RED)
@@ -36,6 +35,7 @@ public class Main {
 
 
         GPSProblem problem = new Game(initialBoard, rulz);
+
         GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR);
         List<GPSRule> solution = engine.findSolution();
         GPSState state = initialBoard;
@@ -47,5 +47,6 @@ public class Main {
             System.out.println(state);
             System.out.println();
         }
+
     }
 }

@@ -23,7 +23,11 @@
     <dependency>
       <groupId>com.github.lmarzora</groupId>
       <artifactId>GeneralProblemSolver</artifactId>
+<<<<<<< HEAD
       <version>3bf4a82</version>
+=======
+      <version>dbae31d</version>
+>>>>>>> 10da5e5f13e93f1b6d58ccfa9ed5ed7a3037e1d6
     </dependency>
   </dependencies>
   <build>
