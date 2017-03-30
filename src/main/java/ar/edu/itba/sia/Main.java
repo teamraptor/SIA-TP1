@@ -1,6 +1,7 @@
 package ar.edu.itba.sia;
 
 import ar.edu.itba.sia.gps.GPSEngine;
+import ar.edu.itba.sia.gps.GPSObserver;
 import ar.edu.itba.sia.gps.SearchStrategy;
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
@@ -18,8 +19,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         List<GPSRule> rulz = new ArrayList<>();
-        /*rulz.add(new TwoInLineRule());
-        rulz.add(new BetweenRule());*/
+//        rulz.add(new TwoInLineRule());
+//        rulz.add(new BetweenRule());
         rulz.add(new SimpleRule(Board.CellContent.BLUE));
         rulz.add(new SimpleRule(Board.CellContent.RED));
 
@@ -31,7 +32,9 @@ public class Main {
 
         GPSProblem problem = new Game(initialBoard, rulz);
 
-        GPSEngine engine = new GPSEngine(problem, SearchStrategy.BFS);
+        GPSEngine engine = new GPSEngine(problem, SearchStrategy.GREEDY, 5);
+        GPSObserver observer = new TreePlotter();
+        engine.addObserver(observer);
         long time = System.currentTimeMillis();
         List<GPSRule> solution = engine.findSolution();
         time = System.currentTimeMillis() - time;

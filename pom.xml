@@ -23,8 +23,14 @@
     <dependency>
       <groupId>com.github.lmarzora</groupId>
       <artifactId>GeneralProblemSolver</artifactId>
-      <version>8b8b53b</version>
+      <version>6f6bfd2</version>
     </dependency>
+      <dependency>
+          <artifactId>gs-core</artifactId>
+          <groupId>org.graphstream</groupId>
+          <version>1.0</version>
+          <optional>false</optional>
+      </dependency>
   </dependencies>
   <build>
     <plugins>
