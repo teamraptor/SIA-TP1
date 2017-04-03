@@ -4,24 +4,36 @@ import ar.edu.itba.sia.gps.GPSNode;
 import ar.edu.itba.sia.gps.GPSObserver;
 
 public class NodeCounter implements GPSObserver {
-    private long counter;
+    private long frontierCounter;
+    private long visitedCounter;
     @Override
     public void start(GPSNode gpsNode) {
-        counter = 1;
+        frontierCounter = 1;
+        visitedCounter = 1;
     }
 
     @Override
-    public void observe(GPSNode gpsNode) {
-        counter++;
-        System.out.println(counter);
+    public void observeFrontier(GPSNode gpsNode) {
+        frontierCounter++;
     }
+
+    @Override
+    public void observeVisited(GPSNode gpsNode) {
+        visitedCounter++;
+    }
+
 
     @Override
     public void finalize() {
-
+        System.out.println("FRONTIER: "  + frontierCounter);
+        System.out.println("VISITED " + visitedCounter);
     }
 
-    public long getCounter() {
-        return counter;
+    public long getFrontierCounter() {
+        return frontierCounter;
+    }
+
+    public long getVisitedCounter() {
+        return visitedCounter;
     }
 }

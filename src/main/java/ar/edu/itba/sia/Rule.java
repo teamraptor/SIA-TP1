@@ -35,12 +35,13 @@ public class Rule implements GPSRule{
     @Override
     public Optional<GPSState> evalRule(GPSState gpsState) {
         Board board = ((Board) gpsState).copy();
+        boolean assumption = true;
         if (board.getPiece(x,y) != CellContent.EMPTY)
             return Optional.empty();
 
         board.setPiece(x,y,piece);
 
-        if (!board.isValid()) {
+        if (!board.validateMove(x,y)) {
             return Optional.empty();
         }
         if ((board.getPiece(x-1,y) == opposite && board.getPiece(x+1,y) == opposite)
@@ -48,13 +49,25 @@ public class Rule implements GPSRule{
             || (board.getPiece(x+1,y) == opposite && board.getPiece(x+2,y) == opposite)
             || (board.getPiece(x,y-1) == opposite && board.getPiece(x,y+1) == opposite)
             || (board.getPiece(x,y-1) == opposite && board.getPiece(x,y-2) == opposite)
-            || (board.getPiece(x,y+1) == opposite && board.getPiece(x,y+2) == opposite))
+            || (board.getPiece(x,y+1) == opposite && board.getPiece(x,y+2) == opposite)
+            || (board.countCellContentInRow(opposite,x) == board.getSize()/2)
+            || (board.countCellContentInCol(opposite,y) == board.getSize()/2))
         {
-            board.increaseSure();
+                board.increaseSure();
+                assumption = false;
         }
-        else
-            board.increaseAsumptions();
+        if (board.isFullCol(y)) {
+            board.incrementFullCols();
+            assumption = false;
+        }
+        if (board.isFullRow(x)) {
+            board.incrementFullRows();
+            assumption = false;
+        }
 
+
+        if (assumption)
+            board.increaseAsumptions();
         return Optional.of(board);
     }
 

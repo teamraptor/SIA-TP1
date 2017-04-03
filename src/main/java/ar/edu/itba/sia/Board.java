@@ -10,29 +10,35 @@ public class Board implements GPSState {
 
     private CellContent[][] board;
     private int hash;
-    private int asumptions;
+    private int assumptions;
     private int sure;
     private int emptyCells;
+    private int fullCols;
+    private int fullRows;
 
     public Board(CellContent[][] initialState) {
         this.board = initialState;
-        this.asumptions = 0;
+        this.assumptions = 0;
         this.sure = 0;
         this.emptyCells = 0;
         for (int i = 0; i < initialState.length; i++) {
             for (int j = 0; j < initialState.length; j++) {
                 if (initialState[i][j] == EMPTY)
                     this.emptyCells++;
+                else
+                    this.sure++;
             }
         }
         updateHashCode();
     }
 
-    public Board(CellContent[][] initialState, int asumptions, int emptyCells, int sure) {
+    public Board(CellContent[][] initialState, int assumptions, int emptyCells, int sure, int fullRows, int fullCols) {
         this.board = initialState;
         this.sure = sure;
-        this.asumptions = asumptions;
+        this.assumptions = assumptions;
         this.emptyCells = emptyCells;
+        this.fullCols = fullCols;
+        this.fullRows = fullRows;
         updateHashCode();
     }
 
@@ -121,7 +127,7 @@ public class Board implements GPSState {
             for (int j = 0; j < n; j++)
                 board[i][j] = this.board[i][j];
         }
-        return new Board(board,this.asumptions,this.emptyCells,this.sure);
+        return new Board(board,this.assumptions,this.emptyCells,this.sure,this.fullRows,this.fullCols);
     }
 
     public enum CellContent {
@@ -141,9 +147,10 @@ public class Board implements GPSState {
     public Board setPiece(int row, int col, CellContent piece) {
         int n = board.length;
         if (!(row >= n || row < 0 || col >= n || col < 0)) {
+            if (board[row][col] == EMPTY)
+                this.emptyCells--;
             board[row][col] = piece;
             updateHashCode();
-            this.emptyCells--;
         }
         return this;
     }
@@ -166,39 +173,136 @@ public class Board implements GPSState {
         return builder.toString();
     }
 
+    public boolean isFullRow(int row) {
+        for (int i = 0; i < this.getSize(); i++) {
+            if (board[row][i] == EMPTY)
+                return false;
+        }
+        return true;
+    }
 
+    public boolean isFullCol(int col) {
+        for (int i = 0; i < this.getSize(); i++) {
+            if (board[i][col] == EMPTY)
+                return false;
+        }
+        return true;
+    }
+
+    public void incrementFullCols() {
+        this.fullCols++;
+    }
+    public void incrementFullRows() {
+        this.fullRows++;
+    }
+
+    public int countCellContentInRow(CellContent c, int row) {
+        int count = 0;
+        for (int i = 0; i < this.getSize(); i++) {
+            if(board[row][i] == c)
+                count++;
+        }
+        return count;
+    }
+    public int countCellContentInCol(CellContent c, int col) {
+        int count = 0;
+        for (int i = 0; i < this.getSize(); i++) {
+            if(board[i][col] == c)
+                count++;
+        }
+        return count;
+    }
 
     public boolean validateMove(final int row, final int col) {
-        boolean ans = false;
-        int size = this.getSize();
+        int n = this.getSize();
+        int countRowsR, countRowsB, countColsR, countColsB;
         CellContent piece = this.getPiece(row,col);
-        //for (int i=0 ; !ans & )
 
-        //Check 2 consecutive values
+        if (piece == EMPTY)
+            return true;
 
-        //Check full row
+        if ((this.getPiece(row-1,col) == piece && this.getPiece(row+1,col) == piece)
+            || (this.getPiece(row-1,col) == piece && this.getPiece(row-2,col) == piece)
+            || (this.getPiece(row+1,col) == piece && this.getPiece(row+2,col) == piece)
+            || (this.getPiece(row,col-1) == piece && this.getPiece(row,col+1) == piece)
+            || (this.getPiece(row,col-1) == piece && this.getPiece(row,col-2) == piece)
+            || (this.getPiece(row,col+1) == piece && this.getPiece(row,col+2) == piece)) {
+            return false;
+        }
 
-        //Check full col
+        countRowsB = 0;
+        countRowsR = 0;
+        countColsB = 0;
+        countColsR = 0;
+        for (int j = 0; j < n; j++) {
+            if (board[row][j] == RED)
+                countRowsR++;
+            else if (board[row][j] == BLUE)
+                countRowsB++;
 
-        //Check between
+            if (board[j][col] == RED)
+                countColsR++;
+            else if (board[j][col] == BLUE)
+                countColsB++;
+        }
 
-        //Check equal sequence
+        if (countColsB > n / 2 || countRowsB > n / 2 || countColsR > n / 2 || countRowsR > n / 2)
+            return false;
 
-        return ans;
+        /*EQ ROWS & COLS ULTIMO*/
+        if (isFullRow(row)) {
+            for (int i = 0; i < n; i++) {
+                if ((i != row) && isFullRow(i)) {
+                    boolean eq = true;
+                    for (int j = 0; j < n; j++) {
+                        if (board[row][j] != board[i][j]) {
+                            eq = false;
+                            break;
+                        }
+                    }
+                    if (eq)
+                        return false;
+                }
+            }
+        }
+        if (isFullCol(col)) {
+            for (int j = 0; j < n; j++) {
+                if ((j != col) && isFullCol(j)) {
+                    boolean eq = true;
+                    for (int i = 0; i < n; i++) {
+                        if (board[i][col] != board[i][j]) {
+                            eq = false;
+                            break;
+                        }
+                    }
+                    if (eq)
+                        return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void increaseAsumptions() {
-        this.asumptions++;
+        this.assumptions++;
     }
 
     public void increaseSure() {
         this.sure++;
     }
-    public int getAsumptions() {
-        return asumptions;
+    public int getAssumptions() {
+        return assumptions;
     }
     public int getSure() {
         return sure;
+    }
+
+    public int getFullCols() {
+        return fullCols;
+    }
+
+    public int getFullRows() {
+        return fullRows;
     }
 
     public int getEmptyCells() {
@@ -212,14 +316,14 @@ public class Board implements GPSState {
 
         Board board1 = (Board) o;
 
-        if (getAsumptions() != board1.getAsumptions()) return false;
+        if (getAssumptions() != board1.getAssumptions()) return false;
         if (emptyCells != board1.emptyCells) return false;
         return Arrays.deepEquals(board, board1.board);
     }
 
     private void updateHashCode() {
         int result = Arrays.deepHashCode(board);
-        result = 31 * result + getAsumptions();
+        result = 31 * result + getAssumptions();
         result = 31 * result + emptyCells;
         this.hash = result;
     }

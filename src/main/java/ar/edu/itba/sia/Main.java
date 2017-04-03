@@ -21,15 +21,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         List<GPSRule> rulz = new ArrayList<>();
-//        rulz.add(new TwoInLineRule());
-//        rulz.add(new BetweenRule());
-//       rulz.add(new SimpleRule(Board.CellContent.BLUE));
-//        rulz.add(new SimpleRule(Board.CellContent.RED));
+//      rulz.add(new TwoInLineRule());
+//      rulz.add(new BetweenRule());
+//      rulz.add(new SimpleRule(Board.CellContent.BLUE));
+//      rulz.add(new SimpleRule(Board.CellContent.RED));
 
-
-
-
-        Board initialBoard = BoardParser.readBoard("./boards/board2.txt");
+        Board initialBoard = BoardParser.readBoard("./boards/board4.txt");
 
         for (int i = 0; i < initialBoard.getSize(); i++) {
             for (int j = 0; j < initialBoard.getSize(); j++) {
@@ -42,13 +39,13 @@ public class Main {
 
         GPSProblem problem = new Game(initialBoard, rulz);
 
-        GPSEngine engine = new GPSEngine(problem, SearchStrategy.GREEDY, 5);
+        GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR, 5);
         //GPSObserver observer = new TreePlotter();
         //engine.addObserver(observer);
-//        NodeCounter counter = new NodeCounter();
+        NodeCounter counter = new NodeCounter();
 //        engine.addObserver(counter);
         Debugger debugger = new Debugger();
-        engine.addObserver(debugger);
+//        engine.addObserver(debugger);
         long time = System.currentTimeMillis();
         List<GPSRule> solution = engine.findSolution();
         time = System.currentTimeMillis() - time;

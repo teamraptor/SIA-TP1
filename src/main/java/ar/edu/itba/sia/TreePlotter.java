@@ -21,7 +21,16 @@ public class TreePlotter implements GPSObserver {
 
         }
 
-        @Override
+    @Override
+    public void observeFrontier(GPSNode gpsNode) {
+
+    }
+
+    @Override
+    public void observeVisited(GPSNode gpsNode) {
+
+    }
+
         public void observe(final GPSNode node) {
             String nodeId = node.getId();
             String parentId = node.getParent().getId();
