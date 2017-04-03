@@ -17,6 +17,7 @@ public class TreePlotter implements GPSObserver {
             Node rootNode = graph.getNode(root.getId());
             rootNode.setAttribute("ui.label",root.getId());
             rootNode.setAttribute("ui.color","RED");
+            graph.display();
 
         }
 
@@ -29,11 +30,16 @@ public class TreePlotter implements GPSObserver {
             graph.getNode(nodeId).setAttribute("ui.label",node.getId());
             graph.addEdge(edgeId,parentId,nodeId,true);
             graph.getEdge(edgeId).setAttribute("ui.label",node.getGenerationRule().getName());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void finalize() {
-            graph.display();
+            //graph.display();
         }
 }
 

@@ -28,6 +28,6 @@ public class Game implements GPSProblem {
 
     public Integer getHValue(GPSState gpsState) {
         Board board = (Board) gpsState;
-        return board.getSize() ^ 2 - board.getFilledSize();
+        return board.getAsumptions();
     }
 }

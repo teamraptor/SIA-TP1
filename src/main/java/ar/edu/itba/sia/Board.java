@@ -1,20 +1,39 @@
 package ar.edu.itba.sia;
 
 import ar.edu.itba.sia.gps.api.GPSState;
+
+import java.util.Arrays;
+
 import static ar.edu.itba.sia.Board.CellContent.*;
 
 public class Board implements GPSState {
 
     private CellContent[][] board;
-    private int filledSize;
+    private int hash;
+    private int asumptions;
+    private int sure;
+    private int emptyCells;
 
     public Board(CellContent[][] initialState) {
         this.board = initialState;
-        filledSize = 0;
+        this.asumptions = 0;
+        this.sure = 0;
+        this.emptyCells = 0;
         for (int i = 0; i < initialState.length; i++) {
-            for (int j = 0; j < initialState.length; j++)
-                filledSize += initialState[i][j]== EMPTY? 0:1;
+            for (int j = 0; j < initialState.length; j++) {
+                if (initialState[i][j] == EMPTY)
+                    this.emptyCells++;
+            }
         }
+        updateHashCode();
+    }
+
+    public Board(CellContent[][] initialState, int asumptions, int emptyCells, int sure) {
+        this.board = initialState;
+        this.sure = sure;
+        this.asumptions = asumptions;
+        this.emptyCells = emptyCells;
+        updateHashCode();
     }
 
     public boolean isFull() {
@@ -27,7 +46,7 @@ public class Board implements GPSState {
         return true;
     }
 
-    public boolean isValid() {
+    public boolean isValid() { //TODO improve perfomance
         int n = board.length;
         boolean fullR, fullC, eqR, eqC;
         int countRowsR, countRowsB, countColsR, countColsB;
@@ -102,7 +121,7 @@ public class Board implements GPSState {
             for (int j = 0; j < n; j++)
                 board[i][j] = this.board[i][j];
         }
-        return new Board(board);
+        return new Board(board,this.asumptions,this.emptyCells,this.sure);
     }
 
     public enum CellContent {
@@ -119,16 +138,12 @@ public class Board implements GPSState {
         return board.length;
     }
 
-    public int getFilledSize() { return this.filledSize; }
-
     public Board setPiece(int row, int col, CellContent piece) {
         int n = board.length;
         if (!(row >= n || row < 0 || col >= n || col < 0)) {
-            if (board[row][col] == EMPTY && piece != EMPTY)
-                filledSize++;
-            if (board[row][col] != EMPTY && piece == EMPTY)
-                filledSize--;
             board[row][col] = piece;
+            updateHashCode();
+            this.emptyCells--;
         }
         return this;
     }
@@ -151,4 +166,65 @@ public class Board implements GPSState {
         return builder.toString();
     }
 
+
+
+    public boolean validateMove(final int row, final int col) {
+        boolean ans = false;
+        int size = this.getSize();
+        CellContent piece = this.getPiece(row,col);
+        //for (int i=0 ; !ans & )
+
+        //Check 2 consecutive values
+
+        //Check full row
+
+        //Check full col
+
+        //Check between
+
+        //Check equal sequence
+
+        return ans;
+    }
+
+    public void increaseAsumptions() {
+        this.asumptions++;
+    }
+
+    public void increaseSure() {
+        this.sure++;
+    }
+    public int getAsumptions() {
+        return asumptions;
+    }
+    public int getSure() {
+        return sure;
+    }
+
+    public int getEmptyCells() {
+        return emptyCells;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Board)) return false;
+
+        Board board1 = (Board) o;
+
+        if (getAsumptions() != board1.getAsumptions()) return false;
+        if (emptyCells != board1.emptyCells) return false;
+        return Arrays.deepEquals(board, board1.board);
+    }
+
+    private void updateHashCode() {
+        int result = Arrays.deepHashCode(board);
+        result = 31 * result + getAsumptions();
+        result = 31 * result + emptyCells;
+        this.hash = result;
+    }
+    @Override
+    public int hashCode() {
+        return hash;
+    }
 }
