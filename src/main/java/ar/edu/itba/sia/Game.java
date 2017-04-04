@@ -6,8 +6,8 @@ import java.util.List;
 public class Game implements GPSProblem {
 
     private final int SURE_WEIGHT = 5;
-    private final int ASSUMP_WEIGHT = 2;
-    private final int FULL_WEIGHT = 10;
+    private final int ASSUMP_WEIGHT = 1;
+    private final int FULL_WEIGHT = 2;
 
     private Board initialState;
     private List<GPSRule> rules;

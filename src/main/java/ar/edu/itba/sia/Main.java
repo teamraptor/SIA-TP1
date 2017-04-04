@@ -26,7 +26,7 @@ public class Main {
 //      rulz.add(new SimpleRule(Board.CellContent.BLUE));
 //      rulz.add(new SimpleRule(Board.CellContent.RED));
 
-        Board initialBoard = BoardParser.readBoard("./boards/board4.txt");
+        Board initialBoard = BoardParser.readBoard("./boards/board8.txt");
 
         for (int i = 0; i < initialBoard.getSize(); i++) {
             for (int j = 0; j < initialBoard.getSize(); j++) {

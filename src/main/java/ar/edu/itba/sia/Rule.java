@@ -44,14 +44,15 @@ public class Rule implements GPSRule{
         if (!board.validateMove(x,y)) {
             return Optional.empty();
         }
-        if ((board.getPiece(x-1,y) == opposite && board.getPiece(x+1,y) == opposite)
+        if ((board.getAssumptions() == 0)
+            && ((board.getPiece(x-1,y) == opposite && board.getPiece(x+1,y) == opposite)
             || (board.getPiece(x-1,y) == opposite && board.getPiece(x-2,y) == opposite)
             || (board.getPiece(x+1,y) == opposite && board.getPiece(x+2,y) == opposite)
             || (board.getPiece(x,y-1) == opposite && board.getPiece(x,y+1) == opposite)
             || (board.getPiece(x,y-1) == opposite && board.getPiece(x,y-2) == opposite)
             || (board.getPiece(x,y+1) == opposite && board.getPiece(x,y+2) == opposite)
             || (board.countCellContentInRow(opposite,x) == board.getSize()/2)
-            || (board.countCellContentInCol(opposite,y) == board.getSize()/2))
+            || (board.countCellContentInCol(opposite,y) == board.getSize()/2)))
         {
                 board.increaseSure();
                 assumption = false;
