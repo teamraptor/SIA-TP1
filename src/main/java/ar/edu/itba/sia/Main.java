@@ -23,7 +23,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
     	
-    	if(args.length == 0 || args.length > 3) 
+    	if(args.length == 0 || args.length > 4) 
     		throw new IOException("Invalid quantity of arguments.");
     	   	
     	if(!args[0].endsWith(".txt"))
@@ -41,6 +41,11 @@ public class Main {
     	
     	int cut = Integer.parseInt(args[2]);
 
+    	if(!StringUtils.isNumeric(args[3]) || Integer.valueOf(args[3]) < 0 || Integer.valueOf(args[3]) > 2 )
+    		throw new IOException("Invalid cut condition.");
+    	
+    	int heuristic = Integer.parseInt(args[3]);
+    	
         List<GPSRule> rulz = new ArrayList<>();
 //      rulz.add(new TwoInLineRule());
 //      rulz.add(new BetweenRule());
@@ -56,7 +61,7 @@ public class Main {
             }
         }
 
-        GPSProblem problem = new Game(initialBoard, rulz);
+        GPSProblem problem = new Game(initialBoard, rulz,heuristic);
         GPSEngine engine = new GPSEngine(problem, strategy, cut);
         //GPSObserver observer = new TreePlotter();
         //engine.addObserver(observer);

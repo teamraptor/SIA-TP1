@@ -1,7 +1,10 @@
 package ar.edu.itba.sia;
 
-import ar.edu.itba.sia.gps.api.*;
 import java.util.List;
+
+import ar.edu.itba.sia.gps.api.GPSProblem;
+import ar.edu.itba.sia.gps.api.GPSRule;
+import ar.edu.itba.sia.gps.api.GPSState;
 
 public class Game implements GPSProblem {
 
@@ -12,18 +15,20 @@ public class Game implements GPSProblem {
     private Board initialState;
     private List<GPSRule> rules;
     private Integer idealValue;
+    private final int heuristic;
 
-    public Game(Board initialState, List<GPSRule> rules) {
+    public Game(final Board initialState, final List<GPSRule> rules, final int heuristic) {
         this.initialState = initialState;
         this.rules = rules;
         this.idealValue = getIdealValue(initialState.getSize());
+        this.heuristic = heuristic;
     }
 
     public GPSState getInitState() {
         return initialState;
     }
 
-    public boolean isGoal(GPSState gpsState) {
+    public boolean isGoal(final GPSState gpsState) {
         Board board = (Board) gpsState;
         return board.isFull() && board.isValid();
     }
@@ -32,21 +37,23 @@ public class Game implements GPSProblem {
         return this.rules;
     }
 
-    public Integer getHValue(GPSState gpsState) {
+    public Integer getHValue(final GPSState gpsState) {
         Board board = (Board) gpsState;
         // empty + sure + assumptions = n * n <= empty
         // empty <= n*n - sure - assumptions / assumptions
         /*h* = board.getEmptyCells() >= emptyCells/ emptyCells + assumptions + sure*/
-        return idealValue - (board.getSure() * SURE_WEIGHT + board.getAssumptions() * ASSUMP_WEIGHT  + (board.getFullCols() + board.getFullRows()) * FULL_WEIGHT);
+        return heuristic==0? firstHeuristic(board) : bestHeuristic(board);
     }
 
-    /** LA heuristica:
-     *
-     * costo real de un movimiento es SURE_WEIGHT
-     * costo de la heuristica es idealValue - (sure * SURE_WEIGHT + assump * ASSUMP_WEIGHT)
-     * SI O SI ASSUMP_WEIGHT < SURE_WEIGHT para que sea admisible.
-     */
     private Integer getIdealValue(final int n) {
         return n * n * SURE_WEIGHT + 2 * n * FULL_WEIGHT;
+    }
+    
+    private Integer firstHeuristic(final Board board) {
+    	return board.getEmptyCells();
+    }
+    
+    private Integer bestHeuristic(final Board board) {
+    	return idealValue - (board.getSure() * SURE_WEIGHT + board.getAssumptions() * ASSUMP_WEIGHT  + (board.getFullCols() + board.getFullRows()) * FULL_WEIGHT);
     }
 }
