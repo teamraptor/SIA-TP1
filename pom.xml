@@ -23,13 +23,18 @@
     <!--<dependency>
       <groupId>com.github.lmarzora</groupId>
       <artifactId>GeneralProblemSolver</artifactId>
-      <version>1949917</version>
+      <version>b7c10d4</version>
     </dependency>-->
       <dependency>
-          <artifactId>gs-core</artifactId>
           <groupId>org.graphstream</groupId>
+          <artifactId>gs-core</artifactId>
           <version>1.0</version>
           <optional>false</optional>
+      </dependency>
+      <dependency>
+  		  <groupId>org.apache.commons</groupId>
+  		  <artifactId>commons-lang3</artifactId>
+          <version>3.5</version>
       </dependency>
   </dependencies>
   <build>

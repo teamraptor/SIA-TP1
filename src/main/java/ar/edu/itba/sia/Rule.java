@@ -7,7 +7,8 @@ import ar.edu.itba.sia.Board.CellContent;
 import java.util.Optional;
 
 public class Rule implements GPSRule{
-    private CellContent piece;
+    
+	private CellContent piece;
     private CellContent opposite;
     private int x;
     private int y;
@@ -52,8 +53,7 @@ public class Rule implements GPSRule{
             || (board.getPiece(x,y-1) == opposite && board.getPiece(x,y-2) == opposite)
             || (board.getPiece(x,y+1) == opposite && board.getPiece(x,y+2) == opposite)
             || (board.countCellContentInRow(opposite,x) == board.getSize()/2)
-            || (board.countCellContentInCol(opposite,y) == board.getSize()/2)))
-        {
+            || (board.countCellContentInCol(opposite,y) == board.getSize()/2))) {
                 board.increaseSure();
                 assumption = false;
         }
@@ -65,8 +65,6 @@ public class Rule implements GPSRule{
             board.incrementFullRows();
             assumption = false;
         }
-
-
         if (assumption)
             board.increaseAsumptions();
         return Optional.of(board);

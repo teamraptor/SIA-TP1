@@ -15,10 +15,13 @@ public class BoardParser {
         String line;
         for (int i = 0; i < n; i++) {
             line = reader.readLine();
-            if (line == null)
+            if (line == null) {
+                reader.close();
                 throw new IllegalArgumentException();
+            }
             board[i] = parseLine(n,line);
         }
+        reader.close();
         return new Board(board);
     }
     private static Board.CellContent[] parseLine(int n, String line) {
@@ -26,14 +29,11 @@ public class BoardParser {
         for (int i = 0; i < n; i++) {
             switch (Character.toUpperCase(line.charAt(i))) {
                 case '-':
-                    row[i] = EMPTY;
-                    break;
+                    row[i] = EMPTY; break;
                 case 'R':
-                    row[i] = RED;
-                    break;
+                    row[i] = RED; break;
                 case 'B':
-                    row[i] = BLUE;
-                    break;
+                    row[i] = BLUE; break;
                 default:
                     throw new IllegalArgumentException();
             }

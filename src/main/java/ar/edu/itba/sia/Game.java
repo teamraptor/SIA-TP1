@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Game implements GPSProblem {
 
-    private final int SURE_WEIGHT = 5;
-    private final int ASSUMP_WEIGHT = 1;
-    private final int FULL_WEIGHT = 2;
+    private static final int SURE_WEIGHT = 5;
+    private static final int ASSUMP_WEIGHT = 1;
+    private static final int FULL_WEIGHT = 2;
 
     private Board initialState;
     private List<GPSRule> rules;
@@ -40,14 +40,13 @@ public class Game implements GPSProblem {
         return idealValue - (board.getSure() * SURE_WEIGHT + board.getAssumptions() * ASSUMP_WEIGHT  + (board.getFullCols() + board.getFullRows()) * FULL_WEIGHT);
     }
 
-        /** LA heuristica:
-         *
-         * costo real de un movimiento es SURE_WEIGHT
-         * costo de la heuristica es idealValue - (sure * SURE_WEIGHT + assump * ASSUMP_WEIGHT)
-         * SI O SI ASSUMP_WEIGHT < SURE_WEIGHT para que sea admisible.
-         */
-
-        private Integer getIdealValue(final int n) {
+    /** LA heuristica:
+     *
+     * costo real de un movimiento es SURE_WEIGHT
+     * costo de la heuristica es idealValue - (sure * SURE_WEIGHT + assump * ASSUMP_WEIGHT)
+     * SI O SI ASSUMP_WEIGHT < SURE_WEIGHT para que sea admisible.
+     */
+    private Integer getIdealValue(final int n) {
         return n * n * SURE_WEIGHT + 2 * n * FULL_WEIGHT;
     }
 }

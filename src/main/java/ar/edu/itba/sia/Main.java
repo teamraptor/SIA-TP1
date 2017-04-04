@@ -1,11 +1,8 @@
 package ar.edu.itba.sia;
 
-import ar.edu.itba.sia.gps.GPSEngine;
-import ar.edu.itba.sia.gps.GPSObserver;
-import ar.edu.itba.sia.gps.SearchStrategy;
-import ar.edu.itba.sia.gps.api.GPSProblem;
-import ar.edu.itba.sia.gps.api.GPSRule;
-import ar.edu.itba.sia.gps.api.GPSState;
+import static ar.edu.itba.sia.Board.CellContent.BLUE;
+import static ar.edu.itba.sia.Board.CellContent.EMPTY;
+import static ar.edu.itba.sia.Board.CellContent.RED;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -14,19 +11,41 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static ar.edu.itba.sia.Board.CellContent.*;
+import org.apache.commons.lang3.StringUtils;
+
+import ar.edu.itba.sia.gps.GPSEngine;
+import ar.edu.itba.sia.gps.SearchStrategy;
+import ar.edu.itba.sia.gps.api.GPSProblem;
+import ar.edu.itba.sia.gps.api.GPSRule;
+import ar.edu.itba.sia.gps.api.GPSState;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
+    	
+    	if(args.length == 0 || args.length > 3) 
+    		throw new IOException("Invalid quantity of arguments.");
+    	   	
+    	if(!args[0].endsWith(".txt"))
+    		throw new IOException("Board missing.");
+
+    	Board initialBoard = BoardParser.readBoard(args[0]); 
+    	
+    	if(!SearchStrategy.contains(args[1]))
+    		throw new IOException("Invalid strategy.");
+    	
+    	SearchStrategy strategy = SearchStrategy.valueOf(args[1]);
+    	
+    	if(!StringUtils.isNumeric(args[2]))
+    		throw new IOException("Invalid cut condition.");
+    	
+    	int cut = Integer.parseInt(args[2]);
 
         List<GPSRule> rulz = new ArrayList<>();
 //      rulz.add(new TwoInLineRule());
 //      rulz.add(new BetweenRule());
 //      rulz.add(new SimpleRule(Board.CellContent.BLUE));
 //      rulz.add(new SimpleRule(Board.CellContent.RED));
-
-        Board initialBoard = BoardParser.readBoard("./boards/board8.txt");
 
         for (int i = 0; i < initialBoard.getSize(); i++) {
             for (int j = 0; j < initialBoard.getSize(); j++) {
@@ -38,8 +57,7 @@ public class Main {
         }
 
         GPSProblem problem = new Game(initialBoard, rulz);
-
-        GPSEngine engine = new GPSEngine(problem, SearchStrategy.ASTAR, 5);
+        GPSEngine engine = new GPSEngine(problem, strategy, cut);
         //GPSObserver observer = new TreePlotter();
         //engine.addObserver(observer);
         NodeCounter counter = new NodeCounter();

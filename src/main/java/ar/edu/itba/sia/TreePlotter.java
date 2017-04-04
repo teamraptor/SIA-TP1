@@ -18,18 +18,13 @@ public class TreePlotter implements GPSObserver {
             rootNode.setAttribute("ui.label",root.getId());
             rootNode.setAttribute("ui.color","RED");
             graph.display();
-
         }
 
     @Override
-    public void observeFrontier(GPSNode gpsNode) {
-
-    }
+    public void observeFrontier(GPSNode gpsNode) {}
 
     @Override
-    public void observeVisited(GPSNode gpsNode) {
-
-    }
+    public void observeVisited(GPSNode gpsNode) {}
 
         public void observe(final GPSNode node) {
             String nodeId = node.getId();
