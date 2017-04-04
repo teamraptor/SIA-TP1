@@ -14,6 +14,7 @@ public class Board implements GPSState {
     private int hash;
     private int assumptions;
     private int sure;
+    private int semiSure;
     private int emptyCells;
     private int fullCols;
     private int fullRows;
@@ -22,6 +23,7 @@ public class Board implements GPSState {
         this.board = initialState;
         this.assumptions = 0;
         this.sure = 0;
+        this.semiSure = 0;
         this.emptyCells = 0;
         for (int i = 0; i < initialState.length; i++) {
             for (int j = 0; j < initialState.length; j++) {
@@ -34,9 +36,10 @@ public class Board implements GPSState {
         updateHashCode();
     }
 
-    public Board(CellContent[][] initialState, int assumptions, int emptyCells, int sure, int fullRows, int fullCols) {
+    public Board(CellContent[][] initialState, int assumptions, int emptyCells, int sure, int semiSure, int fullRows, int fullCols) {
         this.board = initialState;
         this.sure = sure;
+        this.semiSure = semiSure;
         this.assumptions = assumptions;
         this.emptyCells = emptyCells;
         this.fullCols = fullCols;
@@ -129,7 +132,7 @@ public class Board implements GPSState {
             for (int j = 0; j < n; j++)
                 board[i][j] = this.board[i][j];
         }
-        return new Board(board,this.assumptions,this.emptyCells,this.sure,this.fullRows,this.fullCols);
+        return new Board(board,this.assumptions,this.emptyCells,this.sure,this.semiSure,this.fullRows,this.fullCols);
     }
 
     public enum CellContent {
@@ -292,11 +295,17 @@ public class Board implements GPSState {
     public void increaseSure() {
         this.sure++;
     }
+    public void increaseSemiSure() {
+        this.semiSure++;
+    }
     public int getAssumptions() {
         return assumptions;
     }
     public int getSure() {
         return sure;
+    }
+    public int getSemiSure() {
+        return semiSure;
     }
 
     public int getFullCols() {
@@ -340,16 +349,18 @@ public class Board implements GPSState {
         else
             opposite = CellContent.BLUE;
 
-        if ((this.getAssumptions() == 0)
-                && ((this.getPiece(x-1,y) == opposite && this.getPiece(x+1,y) == opposite)
+        if ((this.getPiece(x-1,y) == opposite && this.getPiece(x+1,y) == opposite)
                 || (this.getPiece(x-1,y) == opposite && this.getPiece(x-2,y) == opposite)
                 || (this.getPiece(x+1,y) == opposite && this.getPiece(x+2,y) == opposite)
                 || (this.getPiece(x,y-1) == opposite && this.getPiece(x,y+1) == opposite)
                 || (this.getPiece(x,y-1) == opposite && this.getPiece(x,y-2) == opposite)
                 || (this.getPiece(x,y+1) == opposite && this.getPiece(x,y+2) == opposite)
                 || (this.countCellContentInRow(opposite,x) == this.getSize()/2)
-                || (this.countCellContentInCol(opposite,y) == this.getSize()/2))) {
-            this.increaseSure();
+                || (this.countCellContentInCol(opposite,y) == this.getSize()/2)) {
+            if (this.getAssumptions() == 0)
+                this.increaseSure();
+            else
+                this.increaseSemiSure();
             assumption = false;
         }
         if (this.isFullCol(y)) {

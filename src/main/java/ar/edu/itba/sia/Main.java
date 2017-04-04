@@ -60,6 +60,12 @@ public class Main {
             case 3:
                 heuristic = new NeighboursHeuristic(initialBoard);
                 break;
+            case 4:
+                heuristic = new SureSemiSureHeuristic(initialBoard);
+                break;
+            case 5:
+                heuristic = new InOrderSemiSure(initialBoard);
+                break;
             default:
                 throw new IOException("Invalid heuristic value.");
         }
@@ -107,6 +113,9 @@ public class Main {
             System.out.println(state);
             System.out.println();
         }
+        System.out.println("ASSUMPTIONS: " + ((Board)state).getAssumptions());
+        System.out.println("SURE: " + ((Board)state).getSure());
+        System.out.println("SEMI SURE: " + ((Board)state).getSemiSure());
         System.out.println("TIME: " + dateFormatted);
         //System.out.println("NODES: " + counter.getCounter());
     }
