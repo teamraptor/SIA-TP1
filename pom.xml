@@ -20,11 +20,11 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    <!--<dependency>
+    <dependency>
       <groupId>com.github.lmarzora</groupId>
       <artifactId>GeneralProblemSolver</artifactId>
-      <version>b7c10d4</version>
-    </dependency>-->
+      <version>c2cc78d</version>
+    </dependency>
       <dependency>
           <groupId>org.graphstream</groupId>
           <artifactId>gs-core</artifactId>

@@ -9,23 +9,20 @@ import java.util.Optional;
 public class Rule implements GPSRule{
     
 	private CellContent piece;
-    private CellContent opposite;
     private int x;
     private int y;
+    private Integer cost;
 
-    public Rule(CellContent piece, int x, int y) {
+    public Rule(CellContent piece, int x, int y, final Integer cost) {
         this.piece = piece;
-        if (piece == CellContent.BLUE)
-            this.opposite = CellContent.RED;
-        else
-            this.opposite = CellContent.BLUE;
         this.x = x;
         this.y = y;
+        this.cost = cost;
     }
 
     @Override
     public Integer getCost() {
-        return 1;
+        return cost;
     }
 
     @Override
@@ -36,37 +33,17 @@ public class Rule implements GPSRule{
     @Override
     public Optional<GPSState> evalRule(GPSState gpsState) {
         Board board = ((Board) gpsState).copy();
-        boolean assumption = true;
+
         if (board.getPiece(x,y) != CellContent.EMPTY)
             return Optional.empty();
 
         board.setPiece(x,y,piece);
 
-        if (!board.validateMove(x,y)) {
+        if (!board.validateMove(x,y))
             return Optional.empty();
-        }
-        if ((board.getAssumptions() == 0)
-            && ((board.getPiece(x-1,y) == opposite && board.getPiece(x+1,y) == opposite)
-            || (board.getPiece(x-1,y) == opposite && board.getPiece(x-2,y) == opposite)
-            || (board.getPiece(x+1,y) == opposite && board.getPiece(x+2,y) == opposite)
-            || (board.getPiece(x,y-1) == opposite && board.getPiece(x,y+1) == opposite)
-            || (board.getPiece(x,y-1) == opposite && board.getPiece(x,y-2) == opposite)
-            || (board.getPiece(x,y+1) == opposite && board.getPiece(x,y+2) == opposite)
-            || (board.countCellContentInRow(opposite,x) == board.getSize()/2)
-            || (board.countCellContentInCol(opposite,y) == board.getSize()/2))) {
-                board.increaseSure();
-                assumption = false;
-        }
-        if (board.isFullCol(y)) {
-            board.incrementFullCols();
-            assumption = false;
-        }
-        if (board.isFullRow(x)) {
-            board.incrementFullRows();
-            assumption = false;
-        }
-        if (assumption)
-            board.increaseAsumptions();
+
+        board.updateValues(x,y);
+
         return Optional.of(board);
     }
 

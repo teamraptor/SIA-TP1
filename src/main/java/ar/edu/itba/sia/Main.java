@@ -41,10 +41,28 @@ public class Main {
     	
     	int cut = Integer.parseInt(args[2]);
 
-    	if(!StringUtils.isNumeric(args[3]) || Integer.valueOf(args[3]) < 0 || Integer.valueOf(args[3]) > 2 )
-    		throw new IOException("Invalid cut condition.");
+//    	if(!StringUtils.isNumeric(args[3]) || Integer.valueOf(args[3]) < 0 || Integer.valueOf(args[3]) > 2 )
+//    		throw new IOException("Invalid cut condition.");
     	
-    	int heuristic = Integer.parseInt(args[3]);
+    	int hCode = Integer.parseInt(args[3]);
+        Heuristic heuristic;
+
+        switch (hCode) {
+            case 0:
+                heuristic = new TrivialHeuristic();
+                break;
+            case 1:
+                heuristic = new LeastAssumptions(initialBoard);
+                break;
+            case 2:
+                heuristic = new InOrderHeuristic(initialBoard);
+                break;
+            case 3:
+                heuristic = new NeighboursHeuristic(initialBoard);
+                break;
+            default:
+                throw new IOException("Invalid heuristic value.");
+        }
     	
         List<GPSRule> rulz = new ArrayList<>();
 //      rulz.add(new TwoInLineRule());
@@ -55,13 +73,13 @@ public class Main {
         for (int i = 0; i < initialBoard.getSize(); i++) {
             for (int j = 0; j < initialBoard.getSize(); j++) {
                 if (initialBoard.getPiece(i,j) == EMPTY) {
-                    rulz.add(new Rule(BLUE, i, j));
-                    rulz.add(new Rule(RED, i, j));
+                    rulz.add(new Rule(BLUE, i, j, heuristic.getCost()));
+                    rulz.add(new Rule(RED, i, j, heuristic.getCost()));
                 }
             }
         }
 
-        GPSProblem problem = new Game(initialBoard, rulz,heuristic);
+        GPSProblem problem = new Game(initialBoard, rulz, heuristic);
         GPSEngine engine = new GPSEngine(problem, strategy, cut);
         //GPSObserver observer = new TreePlotter();
         //engine.addObserver(observer);

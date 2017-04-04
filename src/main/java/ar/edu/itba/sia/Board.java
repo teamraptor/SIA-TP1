@@ -1,8 +1,10 @@
 package ar.edu.itba.sia;
 
 import ar.edu.itba.sia.gps.api.GPSState;
+import javafx.scene.control.Cell;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import static ar.edu.itba.sia.Board.CellContent.*;
 
@@ -316,19 +318,49 @@ public class Board implements GPSState {
 
         Board board1 = (Board) o;
 
-        if (getAssumptions() != board1.getAssumptions()) return false;
-        if (emptyCells != board1.emptyCells) return false;
-        return Arrays.deepEquals(board, board1.board);
+        return emptyCells == board1.emptyCells && Arrays.deepEquals(board, board1.board);
     }
 
     private void updateHashCode() {
         int result = Arrays.deepHashCode(board);
-        result = 31 * result + getAssumptions();
         result = 31 * result + emptyCells;
         this.hash = result;
     }
     @Override
     public int hashCode() {
         return hash;
+    }
+
+    public void updateValues(final int x, final int y) {
+        boolean assumption = true;
+        CellContent opposite;
+
+        if (this.getPiece(x,y) == CellContent.BLUE)
+            opposite = CellContent.RED;
+        else
+            opposite = CellContent.BLUE;
+
+        if ((this.getAssumptions() == 0)
+                && ((this.getPiece(x-1,y) == opposite && this.getPiece(x+1,y) == opposite)
+                || (this.getPiece(x-1,y) == opposite && this.getPiece(x-2,y) == opposite)
+                || (this.getPiece(x+1,y) == opposite && this.getPiece(x+2,y) == opposite)
+                || (this.getPiece(x,y-1) == opposite && this.getPiece(x,y+1) == opposite)
+                || (this.getPiece(x,y-1) == opposite && this.getPiece(x,y-2) == opposite)
+                || (this.getPiece(x,y+1) == opposite && this.getPiece(x,y+2) == opposite)
+                || (this.countCellContentInRow(opposite,x) == this.getSize()/2)
+                || (this.countCellContentInCol(opposite,y) == this.getSize()/2))) {
+            this.increaseSure();
+            assumption = false;
+        }
+        if (this.isFullCol(y)) {
+            this.incrementFullCols();
+            assumption = false;
+        }
+        if (this.isFullRow(x)) {
+            this.incrementFullRows();
+            assumption = false;
+        }
+        if (assumption)
+            this.increaseAsumptions();
     }
 }
