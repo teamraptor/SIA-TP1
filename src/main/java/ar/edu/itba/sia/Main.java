@@ -20,15 +20,15 @@ public class Main {
         for (int i = 0; i < args.length; i++) {
             String item = args[i];
 
-            if (item.charAt(0) != '-') {
+            if (item.charAt(0) != '-') 
                 throw new IOException("Input error");
-            }
+            
 
             if ((i+1) < args.length) { // not the last item
                 String next = args[i+1];
-                if (next.charAt(0) == '-') {
+                if (next.charAt(0) == '-') 
                     arguments.put(item, true);
-                } else {
+                else {
                     arguments.put(item, next);
                     i += 1;
                 }
@@ -42,37 +42,35 @@ public class Main {
         Integer cut = null;
         Integer hCode = null;
 
-        if (arguments.get("-b") == null) {
+        if (arguments.get("-b") == null) 
             throw new IOException("Missing Board");
-        } else {
+        else {
             String boardPath = (String) arguments.get("-b");
-            if (!boardPath.endsWith(".txt")) {
+            if (!boardPath.endsWith(".txt")) 
                 throw new IOException("Board parameter is invalid");
-            }
             initialBoard = BoardParser.readBoard(boardPath);
         }
     	
-    	if (arguments.get("-s") == null) {
+    	if (arguments.get("-s") == null) 
             throw new IOException("Missing Search Strategy");
-        } else {
+        else {
             String searchStrategy = (String) arguments.get("-s");
-            if (!SearchStrategy.contains(searchStrategy)) {
+            if (!SearchStrategy.contains(searchStrategy)) 
                 throw new IOException("Invalid strategy.");
-            }
+            
             strategy = SearchStrategy.valueOf(searchStrategy);
         }
 
-        if (arguments.get("-c") == null) {
+        if (arguments.get("-c") == null) 
             throw new IOException("Missing cut condition");
-        } else {
+        else 
             cut = new Integer((String) arguments.get("-c"));
-        }
+        
 
-        if (arguments.get("-h") == null) {
+        if (arguments.get("-h") == null) 
             throw new IOException("Missing heuristic");
-        } else {
+        else 
             hCode = new Integer((String) arguments.get("-h"));
-        }
 
         Heuristic heuristic;
 
