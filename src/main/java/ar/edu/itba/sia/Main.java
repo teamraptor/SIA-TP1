@@ -3,10 +3,7 @@ package ar.edu.itba.sia;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.*;
 
 import ar.edu.itba.sia.gps.GPSEngine;
 import ar.edu.itba.sia.gps.SearchStrategy;
@@ -17,29 +14,66 @@ import ar.edu.itba.sia.gps.api.GPSState;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-    	
-    	if(args.length == 0 || args.length > 4) 
-    		throw new IOException("Invalid quantity of arguments.");
-    	   	
-    	if(!args[0].endsWith(".txt"))
-    		throw new IOException("Board missing.");
 
-    	Board initialBoard = BoardParser.readBoard(args[0]);
+        Map<String, Object> arguments = new HashMap<>();
 
-    	if(!SearchStrategy.contains(args[1]))
-    		throw new IOException("Invalid strategy.");
-    	
-    	SearchStrategy strategy = SearchStrategy.valueOf(args[1]);
-    	
-    	if(!StringUtils.isNumeric(args[2]))
-    		throw new IOException("Invalid cut condition.");
-    	
-    	int cut = Integer.parseInt(args[2]);
+        for (int i = 0; i < args.length; i++) {
+            String item = args[i];
 
-//    	if(!StringUtils.isNumeric(args[3]) || Integer.valueOf(args[3]) < 0 || Integer.valueOf(args[3]) > 2 )
-//    		throw new IOException("Invalid cut condition.");
+            if (item.charAt(0) != '-') {
+                throw new IOException("Input error");
+            }
+
+            if ((i+1) < args.length) { // not the last item
+                String next = args[i+1];
+                if (next.charAt(0) == '-') {
+                    arguments.put(item, true);
+                } else {
+                    arguments.put(item, next);
+                    i += 1;
+                }
+            }
+        }
+
+        System.out.println(arguments);
+
+        Board initialBoard = null;
+        SearchStrategy strategy = null;
+        Integer cut = null;
+        Integer hCode = null;
+
+        if (arguments.get("-b") == null) {
+            throw new IOException("Missing Board");
+        } else {
+            String boardPath = (String) arguments.get("-b");
+            if (!boardPath.endsWith(".txt")) {
+                throw new IOException("Board parameter is invalid");
+            }
+            initialBoard = BoardParser.readBoard(boardPath);
+        }
     	
-    	int hCode = Integer.parseInt(args[3]);
+    	if (arguments.get("-s") == null) {
+            throw new IOException("Missing Search Strategy");
+        } else {
+            String searchStrategy = (String) arguments.get("-s");
+            if (!SearchStrategy.contains(searchStrategy)) {
+                throw new IOException("Invalid strategy.");
+            }
+            strategy = SearchStrategy.valueOf(searchStrategy);
+        }
+
+        if (arguments.get("-c") == null) {
+            throw new IOException("Missing cut condition");
+        } else {
+            cut = new Integer((String) arguments.get("-c"));
+        }
+
+        if (arguments.get("-h") == null) {
+            throw new IOException("Missing heuristic");
+        } else {
+            hCode = new Integer((String) arguments.get("-h"));
+        }
+
         Heuristic heuristic;
 
         switch (hCode) {
