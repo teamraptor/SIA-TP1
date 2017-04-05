@@ -24,7 +24,7 @@ public class LeastAssumptions implements Heuristic{
 
     @Override
     public Integer getCost() {
-        return 1;
+        return SURE_WEIGHT;
     }
 
     @Override

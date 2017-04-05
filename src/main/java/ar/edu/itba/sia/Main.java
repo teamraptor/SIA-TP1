@@ -1,13 +1,8 @@
 package ar.edu.itba.sia;
 
-import static ar.edu.itba.sia.Board.CellContent.BLUE;
-import static ar.edu.itba.sia.Board.CellContent.EMPTY;
-import static ar.edu.itba.sia.Board.CellContent.RED;
-
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,8 +24,8 @@ public class Main {
     	if(!args[0].endsWith(".txt"))
     		throw new IOException("Board missing.");
 
-    	Board initialBoard = BoardParser.readBoard(args[0]); 
-    	
+    	Board initialBoard = BoardParser.readBoard(args[0]);
+
     	if(!SearchStrategy.contains(args[1]))
     		throw new IOException("Invalid strategy.");
     	
@@ -55,44 +50,30 @@ public class Main {
                 heuristic = new LeastAssumptions(initialBoard);
                 break;
             case 2:
-                heuristic = new InOrderHeuristic(initialBoard);
+                heuristic = new ComposedHeuristic(new LeastAssumptions(initialBoard), new InOrderHeuristic(initialBoard));
                 break;
             case 3:
-                heuristic = new NeighboursHeuristic(initialBoard);
+                heuristic = new ComposedHeuristic(new NeighboursHeuristic(), new LeastAssumptions(initialBoard));
                 break;
             case 4:
-                heuristic = new SureSemiSureHeuristic(initialBoard);
+                //heuristic = new SureSemiSureHeuristic(initialBoard);
+                heuristic = new SureSemiSureAdmissibleHeuristic(initialBoard);
                 break;
             case 5:
-                heuristic = new InOrderSemiSure(initialBoard);
+//              heuristic = new ComposedHeuristic(new SureSemiSureHeuristic(initialBoard), new InOrderHeuristic(initialBoard));
+                heuristic = new ComposedHeuristic(new SureSemiSureAdmissibleHeuristic(initialBoard), new InOrderAdmissibleHeuristic(initialBoard));
                 break;
             default:
                 throw new IOException("Invalid heuristic value.");
         }
-    	
-        List<GPSRule> rulz = new ArrayList<>();
-//      rulz.add(new TwoInLineRule());
-//      rulz.add(new BetweenRule());
-//      rulz.add(new SimpleRule(Board.CellContent.BLUE));
-//      rulz.add(new SimpleRule(Board.CellContent.RED));
-
-        for (int i = 0; i < initialBoard.getSize(); i++) {
-            for (int j = 0; j < initialBoard.getSize(); j++) {
-                if (initialBoard.getPiece(i,j) == EMPTY) {
-                    rulz.add(new Rule(BLUE, i, j, heuristic.getCost()));
-                    rulz.add(new Rule(RED, i, j, heuristic.getCost()));
-                }
-            }
-        }
-
-        GPSProblem problem = new Game(initialBoard, rulz, heuristic);
+        GPSProblem problem = MyGameFactory.getNewProblem(initialBoard, heuristic);
         GPSEngine engine = new GPSEngine(problem, strategy, cut);
         //GPSObserver observer = new TreePlotter();
         //engine.addObserver(observer);
         NodeCounter counter = new NodeCounter();
 //        engine.addObserver(counter);
         Debugger debugger = new Debugger();
-//        engine.addObserver(debugger);
+        engine.addObserver(debugger);
         long time = System.currentTimeMillis();
         List<GPSRule> solution = engine.findSolution();
         time = System.currentTimeMillis() - time;

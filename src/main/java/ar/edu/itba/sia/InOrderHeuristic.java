@@ -4,11 +4,9 @@ import ar.edu.itba.sia.gps.api.GPSState;
 
 public class InOrderHeuristic implements Heuristic{
     private Integer size;
-    private LeastAssumptions leastAssumptions;
 
     public InOrderHeuristic(Board initialBoard) {
         this.size = initialBoard.getSize();
-        this.leastAssumptions = new LeastAssumptions(initialBoard);
     }
 
     @Override
@@ -22,16 +20,16 @@ public class InOrderHeuristic implements Heuristic{
                 accum += piece == Board.CellContent.EMPTY ? 3 * size : i+j;
             }
         }
-        return accum + leastAssumptions.getHValue(gpsState);
+        return accum;
     }
 
     @Override
     public Integer getCost() {
-        return 3*size + leastAssumptions.getCost();
+        return 3*size;
     }
 
     @Override
     public String getName() {
-        return "In Order" + leastAssumptions.getName();
+        return "In Order";
     }
 }

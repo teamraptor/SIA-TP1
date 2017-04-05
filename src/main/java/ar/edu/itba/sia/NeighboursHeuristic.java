@@ -3,11 +3,6 @@ package ar.edu.itba.sia;
 import ar.edu.itba.sia.gps.api.GPSState;
 
 public class NeighboursHeuristic implements Heuristic{
-    private LeastAssumptions leastAssumptions;
-
-    public NeighboursHeuristic(Board initialBoard) {
-        this.leastAssumptions = new LeastAssumptions(initialBoard);
-    }
 
     @Override
     public Integer getHValue(GPSState gpsState) {
@@ -28,16 +23,16 @@ public class NeighboursHeuristic implements Heuristic{
                 }
             }
         }
-        return accum + leastAssumptions.getHValue(gpsState);
+        return accum;
     }
 
     @Override
     public Integer getCost() {
-        return 4 + leastAssumptions.getCost();
+        return 4;
     }
 
     @Override
     public String getName() {
-        return "Neighbours" + leastAssumptions.getName();
+        return "Neighbours";
     }
 }

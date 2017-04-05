@@ -2,13 +2,11 @@ package ar.edu.itba.sia;
 
 import ar.edu.itba.sia.gps.api.GPSState;
 
-public class InOrderSemiSure implements Heuristic{
+public class InOrderAdmissibleHeuristic implements Heuristic{
     private Integer size;
-    private SureSemiSureHeuristic sureSemiSureHeuristic;
 
-    public InOrderSemiSure(Board initialBoard) {
+    public InOrderAdmissibleHeuristic(Board initialBoard) {
         this.size = initialBoard.getSize();
-        this.sureSemiSureHeuristic = new SureSemiSureHeuristic(initialBoard);
     }
 
     @Override
@@ -19,19 +17,20 @@ public class InOrderSemiSure implements Heuristic{
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 Board.CellContent piece = board.getPiece(i,j);
-                accum += piece == Board.CellContent.EMPTY ? 3 * size : i+j;
+                if (piece == Board.CellContent.EMPTY)
+                    accum += 2 * size - i - j;
             }
         }
-        return accum + sureSemiSureHeuristic.getHValue(gpsState);
+        return accum;
     }
 
     @Override
     public Integer getCost() {
-        return 3*size + sureSemiSureHeuristic.getCost();
+        return 2*size;
     }
 
     @Override
     public String getName() {
-        return "In Order" + sureSemiSureHeuristic.getName();
+        return "In Order";
     }
 }
