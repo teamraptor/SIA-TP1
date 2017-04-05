@@ -25,8 +25,6 @@ public class NodeCounter implements GPSObserver {
 
     @Override
     public void finalize() {
-        System.out.println("FRONTIER: "  + frontierCounter);
-        System.out.println("VISITED " + visitedCounter);
     }
 
     public long getFrontierCounter() {

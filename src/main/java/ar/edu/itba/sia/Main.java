@@ -88,11 +88,9 @@ public class Main {
                 heuristic = new ComposedHeuristic(new NeighboursHeuristic(), new LeastAssumptions(initialBoard));
                 break;
             case 4:
-                //heuristic = new SureSemiSureHeuristic(initialBoard);
                 heuristic = new SureSemiSureAdmissibleHeuristic(initialBoard);
                 break;
             case 5:
-//              heuristic = new ComposedHeuristic(new SureSemiSureHeuristic(initialBoard), new InOrderHeuristic(initialBoard));
                 heuristic = new ComposedHeuristic(new SureSemiSureAdmissibleHeuristic(initialBoard), new InOrderAdmissibleHeuristic(initialBoard));
                 break;
             case 6:
@@ -103,36 +101,43 @@ public class Main {
         }
         GPSProblem problem = MyGameFactory.getNewProblem(initialBoard, heuristic);
         GPSEngine engine = new GPSEngine(problem, strategy, cut);
-        //GPSObserver observer = new TreePlotter();
-        //engine.addObserver(observer);
         NodeCounter counter = new NodeCounter();
-//        engine.addObserver(counter);
-        Debugger debugger = new Debugger();
-//        engine.addObserver(debugger);
+        engine.addObserver(counter);
+
         long time = System.currentTimeMillis();
         List<GPSRule> solution = engine.findSolution();
         time = System.currentTimeMillis() - time;
-        Date date = new Date(time);
-        DateFormat formatter = new SimpleDateFormat("mm:ss:SSS");
-        String dateFormatted = formatter.format(date);
-        System.out.println();
+
+        /*NO SOLUTIUON*/
+        if (solution.isEmpty()) {
+            System.out.println("NO SOLUTION FOUND");
+            return;
+        }
+        System.out.println("SOLUTION FOUND");
+        System.out.println("DEPTH: " + solution.size());
+        int cost = 0;
+        for (GPSRule rule: solution) {
+            cost += rule.getCost();
+        }
+        System.out.println("SOLUTION COST: " + cost);
+        System.out.println("FRONTIER SIZE: " + counter.getFrontierCounter());
+        System.out.println("EXPLORED SIZE: " + counter.getVisitedCounter());
+
         GPSState state = initialBoard;
+        System.out.println("INITIAL BOARD");
         System.out.println(initialBoard);
         System.out.println();
         for (GPSRule rule :solution) {
             state = rule.evalRule(state).get();
-            if (!((Board)state).isValid()) {
-                System.out.println("NO");
-                return;
-            }
             System.out.println(rule);
             System.out.println(state);
             System.out.println();
         }
-        System.out.println("ASSUMPTIONS: " + ((Board)state).getAssumptions());
-        System.out.println("SURE: " + ((Board)state).getSure());
-        System.out.println("SEMI SURE: " + ((Board)state).getSemiSure());
+
+        Date date = new Date(time);
+        DateFormat formatter = new SimpleDateFormat("mm:ss:SSS");
+        String dateFormatted = formatter.format(date);
         System.out.println("TIME: " + dateFormatted);
-        //System.out.println("NODES: " + counter.getCounter());
+
     }
 }
