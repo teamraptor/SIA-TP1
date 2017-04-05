@@ -97,6 +97,9 @@ public class Main {
 //              heuristic = new ComposedHeuristic(new SureSemiSureHeuristic(initialBoard), new InOrderHeuristic(initialBoard));
                 heuristic = new ComposedHeuristic(new SureSemiSureAdmissibleHeuristic(initialBoard), new InOrderAdmissibleHeuristic(initialBoard));
                 break;
+            case 6:
+                heuristic = new BestHeuristic(initialBoard);
+                break;
             default:
                 throw new IOException("Invalid heuristic value.");
         }

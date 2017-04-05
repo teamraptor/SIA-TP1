@@ -1,11 +1,7 @@
 package ar.edu.itba.sia;
 
 import ar.edu.itba.sia.gps.api.GPSState;
-import javafx.scene.control.Cell;
-
 import java.util.Arrays;
-import java.util.Optional;
-
 import static ar.edu.itba.sia.Board.CellContent.*;
 
 public class Board implements GPSState {

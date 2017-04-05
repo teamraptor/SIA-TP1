@@ -16,15 +16,15 @@ public class LeastAssumptions implements Heuristic{
     @Override
     public Integer getHValue(GPSState gpsState) {
         Board board = (Board) gpsState;
-        // empty + sure + assumptions = n * n <= empty
-        // empty <= n*n - sure - assumptions / assumptions
-        /*h* = board.getEmptyCells() >= emptyCells/ emptyCells + assumptions + sure*/
-        return idealValue - (board.getSure() * SURE_WEIGHT + board.getAssumptions() * ASSUMP_WEIGHT  + (board.getFullCols() + board.getFullRows()) * FULL_WEIGHT);
+        if (board.getEmptyCells() == 0)
+            return 0;
+        return idealValue - (board.getSure() * SURE_WEIGHT + (board.getAssumptions()+board.getSemiSure()) * ASSUMP_WEIGHT + (board.getFullCols() + board.getFullRows()) * FULL_WEIGHT);
+        //
     }
 
     @Override
     public Integer getCost() {
-        return SURE_WEIGHT;
+        return 1;
     }
 
     @Override
