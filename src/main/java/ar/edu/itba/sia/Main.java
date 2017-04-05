@@ -110,7 +110,7 @@ public class Main {
         NodeCounter counter = new NodeCounter();
 //        engine.addObserver(counter);
         Debugger debugger = new Debugger();
-        engine.addObserver(debugger);
+//        engine.addObserver(debugger);
         long time = System.currentTimeMillis();
         List<GPSRule> solution = engine.findSolution();
         time = System.currentTimeMillis() - time;
