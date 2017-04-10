@@ -3,6 +3,7 @@ package ar.edu.itba.sia.test;
 import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,17 +82,23 @@ public class Test {
         System.out.println("FRONTIER SIZE: " + counter.getFrontierCounter());
         System.out.println("EXPLORED SIZE: " + counter.getVisitedCounter());
 
-        System.out.println("INITIAL BOARD");
-        System.out.println(processed_state);
-        System.out.println();
-        
+        List<SokobanState> solve = new ArrayList<>();
+
+//        System.out.println("INITIAL BOARD");
+//        System.out.println(processed_state);
+//        System.out.println();
+
+		solve.add((SokobanState) processed_state);
         for (GPSRule rule :solution) {
         	processed_state = rule.evalRule(processed_state).get();
-            System.out.println(rule.getName());
-            System.out.println(processed_state);
-            System.out.println();
+			solve.add((SokobanState) processed_state);
+//            System.out.println(rule.getName());
+//            System.out.println(processed_state);
+//            System.out.println();
         }
 
+
+		GraphicManager.startAnimation(((SokobanState) processed_state).getHeight(),((SokobanState) processed_state).getWidth(),solve);
         Date date = new Date(time);
         DateFormat formatter = new SimpleDateFormat("mm:ss:SSS");
         String dateFormatted = formatter.format(date);
