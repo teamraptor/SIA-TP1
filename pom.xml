@@ -20,7 +20,7 @@
     <java.version>1.8</java.version>
     <maven-jar.version>3.0.1</maven-jar.version>
     <graphstream.version>1.0</graphstream.version>
-    <gps.version>c2cc78d</gps.version>
+    <gps.version>34e0802</gps.version>
     <junit.version>3.8.1</junit.version>
     <apache-commons.version>3.5</apache-commons.version>
   </properties>

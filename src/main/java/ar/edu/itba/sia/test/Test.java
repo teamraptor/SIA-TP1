@@ -87,7 +87,7 @@ public class Test {
         
         for (GPSRule rule :solution) {
         	processed_state = rule.evalRule(processed_state).get();
-            System.out.println(rule);
+            System.out.println(rule.getName());
             System.out.println(processed_state);
             System.out.println();
         }
