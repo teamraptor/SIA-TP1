@@ -1,11 +1,6 @@
 package ar.edu.itba.sia.test;
 
-
-import ar.edu.itba.sia.gps.GPSEngine;
-import ar.edu.itba.sia.gps.GPSNode;
-
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GraphicManager {

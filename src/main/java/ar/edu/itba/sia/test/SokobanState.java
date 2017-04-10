@@ -67,9 +67,7 @@ public class SokobanState implements GPSState {
 		SokobanState other = (SokobanState) obj;
 		if(!playerPos.equals(other.playerPos))
 			return false;
-		if(!boxes.containsAll(other.boxes))
-			return false;
-		return true;
+		return boxes.containsAll(other.boxes);
 	}
 	
 	public static byte[][] copyBoard(byte[][] original){

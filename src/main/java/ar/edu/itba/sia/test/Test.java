@@ -81,7 +81,12 @@ public class Test {
         System.out.println("SOLUTION COST: " + cost);
         System.out.println("FRONTIER SIZE: " + counter.getFrontierCounter());
         System.out.println("EXPLORED SIZE: " + counter.getVisitedCounter());
-
+		System.out.println("FRONTIER - EXPLORED: " + (counter.getFrontierCounter() - counter.getVisitedCounter()));
+		System.out.println("EXPLORED FRONTIER RATIO: " + (1.0 * counter.getVisitedCounter()) / counter.getFrontierCounter());
+		Date date = new Date(time);
+		DateFormat formatter = new SimpleDateFormat("mm:ss:SSS");
+		String dateFormatted = formatter.format(date);
+		System.out.println("TIME: " + dateFormatted);
         List<SokobanState> solve = new ArrayList<>();
 
 //        System.out.println("INITIAL BOARD");
@@ -92,17 +97,12 @@ public class Test {
         for (GPSRule rule :solution) {
         	processed_state = rule.evalRule(processed_state).get();
 			solve.add((SokobanState) processed_state);
-//            System.out.println(rule.getName());
-//            System.out.println(processed_state);
-//            System.out.println();
+            System.out.print(rule.getName() + " ");
         }
 
 
 		GraphicManager.startAnimation(((SokobanState) processed_state).getHeight(),((SokobanState) processed_state).getWidth(),solve);
-        Date date = new Date(time);
-        DateFormat formatter = new SimpleDateFormat("mm:ss:SSS");
-        String dateFormatted = formatter.format(date);
-        System.out.println("TIME: " + dateFormatted);
+
 
 	}
 }

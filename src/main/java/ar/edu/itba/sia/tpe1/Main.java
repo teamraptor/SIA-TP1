@@ -122,6 +122,11 @@ public class Main {
         System.out.println("SOLUTION COST: " + cost);
         System.out.println("FRONTIER SIZE: " + counter.getFrontierCounter());
         System.out.println("EXPLORED SIZE: " + counter.getVisitedCounter());
+        System.out.println("EXPLORED FRONTIER RATIO: " + (1.0 * counter.getVisitedCounter()) / counter.getFrontierCounter());
+        Date date = new Date(time);
+        DateFormat formatter = new SimpleDateFormat("mm:ss:SSS");
+        String dateFormatted = formatter.format(date);
+        System.out.println("TIME: " + dateFormatted);
 
         GPSState state = initialBoard;
         System.out.println("INITIAL BOARD");
@@ -134,9 +139,5 @@ public class Main {
             System.out.println();
         }
 
-        Date date = new Date(time);
-        DateFormat formatter = new SimpleDateFormat("mm:ss:SSS");
-        String dateFormatted = formatter.format(date);
-        System.out.println("TIME: " + dateFormatted);
     }
 }

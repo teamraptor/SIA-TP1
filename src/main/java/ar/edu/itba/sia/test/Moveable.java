@@ -8,13 +8,10 @@ public abstract class Moveable {
 		if((s.getBoard()[(int)s.getPlayerPos().getX() + m.getX()][(int)s.getPlayerPos().getY() + m.getY()] & TILE.WALL.getValue()) != 0){
 			return false;
 		}
-		if((s.getBoard()[(int)s.getPlayerPos().getX() + m.getX()][(int)s.getPlayerPos().getY()+m.getY()] & TILE.BOX.getValue()) != 0 
-				&& ((s.getBoard()[(int)s.getPlayerPos().getX()+m.getX()*2][(int)s.getPlayerPos().getY() + m.getY()*2] & TILE.WALL.getValue()) != 0  
-				|| (s.getBoard()[(int)s.getPlayerPos().getX()+ m.getX()*2][(int)s.getPlayerPos().getY() + m.getY()*2] & TILE.BOX.getValue()) != 0)){
-			return false;
-		}
-		return true;
-	}
+        return !((s.getBoard()[(int) s.getPlayerPos().getX() + m.getX()][(int) s.getPlayerPos().getY() + m.getY()] & TILE.BOX.getValue()) != 0
+                && ((s.getBoard()[(int) s.getPlayerPos().getX() + m.getX() * 2][(int) s.getPlayerPos().getY() + m.getY() * 2] & TILE.WALL.getValue()) != 0
+                || (s.getBoard()[(int) s.getPlayerPos().getX() + m.getX() * 2][(int) s.getPlayerPos().getY() + m.getY() * 2] & TILE.BOX.getValue()) != 0));
+    }
 	
 	public boolean nextToBox(MOVE m,SokobanState s){
 		return ((s.getBoard()[(int)s.getPlayerPos().getX() + m.getX()][(int)s.getPlayerPos().getY() + m.getY()] & TILE.BOX.getValue()) != 0);
