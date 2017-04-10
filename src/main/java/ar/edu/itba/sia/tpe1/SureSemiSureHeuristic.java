@@ -1,4 +1,4 @@
-package ar.edu.itba.sia;
+package ar.edu.itba.sia.tpe1;
 
 import ar.edu.itba.sia.gps.api.GPSState;
 
@@ -9,12 +9,11 @@ public class SureSemiSureHeuristic implements Heuristic{
     private static final int ASSUMP_WEIGHT = 3;
 
     private Integer idealValue;
-    private Integer size;
 
     public SureSemiSureHeuristic(final Board initialState){
         this.idealValue = getIdealValue(initialState.getSize());
-        this.size = initialState.getSize();
     }
+    
     @Override
     public Integer getHValue(GPSState gpsState) {
         Board board = (Board) gpsState;

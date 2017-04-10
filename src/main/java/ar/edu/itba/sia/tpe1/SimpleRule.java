@@ -1,8 +1,7 @@
-package ar.edu.itba.sia;
+package ar.edu.itba.sia.tpe1;
 
-import ar.edu.itba.sia.Board.CellContent;
 import ar.edu.itba.sia.gps.api.*;
-
+import ar.edu.itba.sia.tpe1.Board.CellContent;
 
 import java.util.Optional;
 

@@ -1,10 +1,10 @@
-package ar.edu.itba.sia;
+package ar.edu.itba.sia.tpe1;
+
+import static ar.edu.itba.sia.tpe1.Board.CellContent.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
-import static ar.edu.itba.sia.Board.CellContent.*;
 
 public class BoardParser {
 

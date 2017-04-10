@@ -1,4 +1,4 @@
-package ar.edu.itba.sia;
+package ar.edu.itba.sia.tpe1;
 
 import ar.edu.itba.sia.gps.api.GPSState;
 
@@ -8,7 +8,6 @@ public class SureSemiSureAdmissibleHeuristic implements Heuristic{
     private static final int SEMI_SURE_WEIGHT = 5;
     private static final int ASSUMP_WEIGHT = 10;
 
-    private Integer idealValue;
     private Integer n;
 
     public SureSemiSureAdmissibleHeuristic(final Board initialState){

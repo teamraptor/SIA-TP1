@@ -1,13 +1,13 @@
-package ar.edu.itba.sia;
+package ar.edu.itba.sia.tpe1;
 
 import ar.edu.itba.sia.gps.api.GPSProblem;
 import ar.edu.itba.sia.gps.api.GPSRule;
 
+import static ar.edu.itba.sia.tpe1.Board.CellContent.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static ar.edu.itba.sia.Board.CellContent.*;
 
 public class MyGameFactory {
 

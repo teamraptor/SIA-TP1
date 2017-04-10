@@ -1,4 +1,4 @@
-package ar.edu.itba.sia;
+package ar.edu.itba.sia.tpe1;
 
 import java.util.List;
 

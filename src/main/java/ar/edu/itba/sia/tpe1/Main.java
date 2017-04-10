@@ -1,4 +1,4 @@
-package ar.edu.itba.sia;
+package ar.edu.itba.sia.tpe1;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -108,7 +108,7 @@ public class Main {
         List<GPSRule> solution = engine.findSolution();
         time = System.currentTimeMillis() - time;
 
-        /*NO SOLUTIUON*/
+        /*NO SOLUTION*/
         if (solution.isEmpty()) {
             System.out.println("NO SOLUTION FOUND");
             return;
@@ -138,6 +138,5 @@ public class Main {
         DateFormat formatter = new SimpleDateFormat("mm:ss:SSS");
         String dateFormatted = formatter.format(date);
         System.out.println("TIME: " + dateFormatted);
-
     }
 }
