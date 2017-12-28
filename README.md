@@ -49,9 +49,7 @@ The following search strategies are available:
 
 ## Credits
 
-**Group 3**
-
-* Soncini, Lucas (52066)
-* Marzoratti, Luis (54449)
-* Fraga, Matías (53214)
-* De Lucca, Tomás (52051)
+* [Marzoratti, Luis](https://github.com/lmarzora)
+* [Soncini, Lucas](https://github.com/lsoncini)
+* [Fraga, Matias](https://github.com/matifraga)
+* [De Lucca, Tomas](https://github.com/tomidelucca)
